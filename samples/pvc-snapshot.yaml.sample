@@ -1,0 +1,32 @@
+# uses: complete snapshot of existing pvc
+
+### NOTE ###
+# not a working k8s yaml
+# this is a 2-task process
+############
+
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata:
+  name: postgres-snap
+spec:
+  volumeSnapshotClassName: <class>
+  source:
+    persistentVolumeClaimName: postgres-pvc
+
+### THEN:
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-pvc
+spec:
+  dataSource:
+    name: postgres-snap
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: <same-or-larger>

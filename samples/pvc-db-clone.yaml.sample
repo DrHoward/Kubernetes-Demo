@@ -1,0 +1,16 @@
+# uses: clone an existing pvc
+#       not as useful as snapshot
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-pvc
+spec:
+  storageClassName: <same-as-before>
+  dataSource:
+    kind: PersistentVolumeClaim
+    name: postgres-pvc
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: <same-or-larger>
