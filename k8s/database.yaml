@@ -1,39 +1,33 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: database
+  name: postgres
 spec:
-  serviceName: "database"
   replicas: 1
   selector:
     matchLabels:
-      app: database
+      app: postgres
   template:
     metadata:
       labels:
-        app: database
+        app: postgres
     spec:
       containers:
-        - name: database
-          image: postgres:latest
-          ports:
-            - containerPort: 5432
+        - name: postgres
+          image: postgres:16
           env:
             - name: POSTGRES_USER
-              value: user
+              value: appuser
             - name: POSTGRES_PASSWORD
               value: password
             - name: POSTGRES_DB
-              value: mydb
+              value: appdb
+          ports:
+            - containerPort: 5432
           volumeMounts:
-            - name: postgres-storage
-              mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-    - metadata:
-        name: postgres-storage
-      spec:
-        accessModes: 
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: 1Gi
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc

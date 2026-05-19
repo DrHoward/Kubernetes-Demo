@@ -19,4 +19,4 @@ spec:
             - containerPort: 8000
           env:
             - name: DATABASE_URL
-              value: postgres://user:password@postgres:5432/mydb
+              value: postgres://user:password@database:5432/mydb
