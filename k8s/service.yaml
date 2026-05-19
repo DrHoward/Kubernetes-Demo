@@ -26,4 +26,5 @@ spec:
   selector:
     app: database
   ports:
-    - port: 5432
+    - port: 5432        # what backend uses
+      targetPort: 5432  # what container listens on; optional if same
