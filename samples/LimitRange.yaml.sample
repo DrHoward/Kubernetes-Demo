@@ -1,0 +1,19 @@
+## LimitRange = per-pod resource limits
+## see ResourceQuota for resource limits on entire namespace
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: default-limits
+  namespace: secure-app
+spec:
+  limits:
+  - type: Container
+    defaultRequest:
+      cpu: 100m
+      memory: 128Mi
+    default:
+      cpu: 500m
+      memory: 512Mi
+    max:
+      cpu: "2"
+      memory: 2Gi
